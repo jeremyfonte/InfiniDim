@@ -19,8 +19,8 @@ limitations under the License.
 package me.fonte.infinidim;
 
 import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.UUID;
-
 
 /**
  * 
@@ -31,9 +31,88 @@ public class InfiniDim<T extends Number> {
 	public final String id = UUID.randomUUID().toString(); //unique ID for this instance
 	private LinkedList<T> data = new LinkedList<T>(); //1D list that holds all the multidimensional, flattened
 	private int dimensions; //The number of dimensions (i.e., x, y, etc)
-	private LinkedList<Integer> listLen = new LinkedList<Integer>(); //the length of each dimension, from inner to outer - i.e., x to y to z
+	private HashMap<Integer, Integer> dimLen = new HashMap<Integer, Integer>(); //the length of each dimension, by key, i.e., 0, 1, 2 = x, y, z
 	
 	
 	//default constructor
 	public InfiniDim() {}
+	
+	
+	/**normal, smaller constructor - specify dimensions and set lengths of the dimensions to 0
+	 * 
+	 * @param numDimensions The number of dimensions
+	 */
+	public InfiniDim(int numDimensions) {
+		this.dimensions = numDimensions;
+		for(int i = 0; i < dimensions; i++) {
+			this.dimLen.put(i, 0);
+		}
+	}
+	
+	/**normal, full constructor - specify dimensions and lengths of each dimension
+	 * 
+	 * @param numDimensions The number of dimensions
+	 * @param dimLen A linked list storing the length of each dimension
+	 */
+	public InfiniDim(int numDimensions, HashMap<Integer, Integer> dimLen) {
+		this.dimensions = numDimensions;
+		this.dimLen = dimLen;
+	}
+	
+	/**
+	 * Map an N-Dimensional point from it's coordinates to their mapped position on a 1D "line" or array
+	 * 
+	 * @param coords A map of dimension keys to the value in that dimension specified by the input
+	 * @return The index of the mapped coordinates on a 1D array
+	 */
+	private int mapNDimToSingle(HashMap<Integer, Integer> coords) {
+		int coordLen = coords.size();
+		int errReturn = -1;
+		int returnVal = 0;
+		
+		//If the input coords have more dimensions that the enclosing object, or there are no dimensions, throw an error and return to caller
+		if(coordLen > this.dimensions || coordLen == 0) {
+			//throw error and return
+			return -1;
+		}		
+		//This else wraps code for valid # of dimensions
+		else {	
+			
+			//check if the available keys match this class' patterns
+			for(int i = 0; i < coordLen; i++) {
+				if(coords.get(i) == null) {
+					//throw error, missing or incorrect dimension key (should be 0, 1, 2, 3, etc, not 0, 5, 11, 4, etc.)
+					return errReturn;
+				}
+				else if(coords.get(i) < 0) {
+					//throw error, negative indeces not allowed for location on a dimension					
+					return errReturn;
+				}
+				else if(coords.get(i) > this.dimLen.get(i) ) {
+					//throw error, specified coord for specified dimension is larger than max value for that dimension
+					return errReturn;
+				}
+				//else, valid input - increase the value of index in 1D array
+				else {
+					if(i == 0) {
+						//the value of the x coordinate is just the index, no multiplication of dimension lengths
+						returnVal += coords.get(0);
+					}
+					//calculate the value of the current dimension
+					else {
+						int calcVal = coords.get(i);
+						
+						for(int n = i; n > 0; n--) {
+							calcVal *= this.dimLen.get(n);
+						}
+						
+						returnVal += calcVal;
+					}
+				}
+			}						
+			
+			return returnVal;
+		}
+	}
+	
 }
