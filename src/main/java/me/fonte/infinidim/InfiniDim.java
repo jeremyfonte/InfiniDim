@@ -59,6 +59,17 @@ public class InfiniDim<T extends Number> {
 		this.dimLen = dimLen;
 	}
 	
+	public int getFlatIndex(HashMap<Integer, Integer> coords) {
+		return mapNDimToSingle(coords);
+	}
+	
+	/*
+	public int getNDimIndex() {
+		
+	}
+	*/
+	
+	
 	/**
 	 * Map an N-Dimensional point from it's coordinates to their mapped position on a 1D "line" or array
 	 * 
