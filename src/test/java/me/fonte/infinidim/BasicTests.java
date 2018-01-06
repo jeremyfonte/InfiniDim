@@ -8,16 +8,17 @@ public class BasicTests {
 	public static void main(String[] args) {
 		System.out.println("Testing...");
 			
-		testBasic();
+		testBasic(5, 4, 1, 2);
+		testBasic(10, 4, 1, 2);
+		test3D(5, 10, 10, 1, 2, 2);
 	}
 	
-	private static void testBasic() {
+	private static void testBasic(int xLen, int yLen, int xCoord, int yCoord) {
 		//---
 		//declare required vars, init them
 		//---
 		HashMap<Integer, Integer> dimLenHashMap = new HashMap<>();
-		int xLen = 5;
-		int yLen = 4;
+		
 		dimLenHashMap.put(0, xLen);
 		dimLenHashMap.put(1, yLen);
 		
@@ -28,8 +29,6 @@ public class BasicTests {
 
 		//set up the coords for the new value		
 		HashMap<Integer, Integer> coordHashMap = new HashMap<>();
-		int xCoord = 1;
-		int yCoord = 2;
 		
 		coordHashMap.put(0, xCoord); //x coord = 3rd (arrays start at 0)
 		coordHashMap.put(1, yCoord); //y coord = 2nd
@@ -42,5 +41,18 @@ public class BasicTests {
 		
 		System.out.println("Flattened Index Result: " + result);
 		
+	}
+	
+	private static void test3D(int xLen, int yLen, int zLen, int xCoord, int yCoord, int zCoord) {
+		//---
+		//declare required vars, init them
+		//---
+		HashMap<Integer, Integer> dimLenHashMap = new HashMap<>();
+		
+		dimLenHashMap.put(0, xLen);
+		dimLenHashMap.put(1, yLen);
+		
+		System.out.println("x Length: " + xLen);
+		System.out.println("y Length: " + yLen);		
 	}
 }

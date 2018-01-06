@@ -84,12 +84,13 @@ public class InfiniDim<T extends Number> {
 		//If the input coords have more dimensions that the enclosing object, or there are no dimensions, throw an error and return to caller
 		if(coordLen > this.dimensions || coordLen == 0) {
 			//throw error and return
-			return -1;
+			return errReturn;
 		}		
 		//This else wraps code for valid # of dimensions
 		else {	
 			
 			//check if the available keys match this class' patterns
+			//then calc the return value
 			for(int i = 0; i < coordLen; i++) {
 				if(coords.get(i) == null) {
 					//throw error, missing or incorrect dimension key (should be 0, 1, 2, 3, etc, not 0, 5, 11, 4, etc.)
@@ -113,7 +114,7 @@ public class InfiniDim<T extends Number> {
 					else {
 						int calcVal = coords.get(i);
 						
-						for(int n = i; n > 0; n--) {
+						for(int n = i - 1; n >= 0; n--) {
 							calcVal *= this.dimLen.get(n);
 						}
 						
