@@ -18,7 +18,7 @@ limitations under the License.
 
 package me.fonte.infinidim;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public class InfiniDim<T extends Number> {
 	public final String id = UUID.randomUUID().toString(); //unique ID for this instance
-	private LinkedList<T> data = new LinkedList<T>(); //1D list that holds all the multidimensional, flattened
+	private ArrayList<T> data = new ArrayList<T>(); //1D list that holds all the multidimensional, flattened
 	private int dimensions; //The number of dimensions (i.e., x, y, etc)
 	private HashMap<Integer, Integer> dimLen = new HashMap<Integer, Integer>(); //the length of each dimension, by key, i.e., 0, 1, 2 = x, y, z
 	
@@ -63,12 +63,6 @@ public class InfiniDim<T extends Number> {
 		return mapNDimToSingle(coords);
 	}
 	
-	/*
-	public int getNDimIndex() {
-		
-	}
-	*/
-	
 	
 	/**
 	 * Map an N-Dimensional point from it's coordinates to their mapped position on a 1D "line" or array
@@ -78,7 +72,7 @@ public class InfiniDim<T extends Number> {
 	 */
 	private int mapNDimToSingle(HashMap<Integer, Integer> coords) {
 		int coordLen = coords.size();
-		int errReturn = -1;
+		final int errReturn = -1; //constant val for error return values (should throw errors too)
 		int returnVal = 0;
 		
 		//If the input coords have more dimensions that the enclosing object, or there are no dimensions, throw an error and return to caller
@@ -125,6 +119,14 @@ public class InfiniDim<T extends Number> {
 			
 			return returnVal;
 		}
+	}
+	
+	private HashMap<Integer, Integer> mapSingleToNDim(int flatIndex) {
+		//declare and init the ouput hash map
+		HashMap<Integer, Integer> outputNDim = new HashMap<>();
+		
+		
+		return outputNDim;
 	}
 	
 }
