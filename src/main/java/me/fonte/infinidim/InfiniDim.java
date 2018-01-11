@@ -33,6 +33,9 @@ public class InfiniDim<T extends Number> {
 	private int dimensions; //The number of dimensions (i.e., x, y, etc)
 	private HashMap<Integer, Integer> dimLen = new HashMap<Integer, Integer>(); //the length of each dimension, by key, i.e., 0, 1, 2 = x, y, z
 	
+	public int getDimensions() {
+		return this.dimensions;
+	}
 	
 	//default constructor
 	public InfiniDim() {}
@@ -121,10 +124,40 @@ public class InfiniDim<T extends Number> {
 		}
 	}
 	
+	
+	public HashMap<Integer, Integer> getNDim(int flatIndex) {
+		return mapSingleToNDim(flatIndex);
+	}
+	
+	/**
+	 * Map an index (from a 1D array) to the corresponding N-dimensional array it represents
+	 * 
+	 * @param flatIndex The integer index to convert to an N-dim array
+	 * @return The corresponding N-dimensional array
+	 */
 	private HashMap<Integer, Integer> mapSingleToNDim(int flatIndex) {
 		//declare and init the ouput hash map
 		HashMap<Integer, Integer> outputNDim = new HashMap<>();
 		
+		//flatIndex stays the same and workingAmount holds the value as it changes
+		int workingAmount = flatIndex;
+		
+		//loop through the dimensions, separating the flat index into the various dimensions
+		for(int i = this.dimensions - 1; i >= 0; i--) {
+			//init the current dimension
+			outputNDim.put(i, 0);
+			
+			int dimLenProduct = 1;
+			for(int n = i - 1; n >= 0; n--) {
+				dimLenProduct *= this.dimLen.get(n);
+			}
+			
+			
+			while(workingAmount >= dimLenProduct) {
+				workingAmount -= dimLenProduct;
+				outputNDim.put(i, outputNDim.get(i) + 1);
+			}
+		}
 		
 		return outputNDim;
 	}
