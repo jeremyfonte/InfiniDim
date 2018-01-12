@@ -11,8 +11,8 @@ public class BasicTests {
 		//testBasic(5, 4, 1, 2);
 		//testBasic(10, 4, 1, 2);
 		//test3D(5, 10, 10, 1, 2, 2);
-		testBasicFlatIndex(20, 5, 44);
-		
+		//testBasicFlatIndex(20, 5, 44);
+		test3DFlatIndex(5, 7, 3, 26);
 	}
 	
 	private static void testBasic(int xLen, int yLen, int xCoord, int yCoord) {
@@ -27,7 +27,7 @@ public class BasicTests {
 		System.out.println("x Length: " + xLen);
 		System.out.println("y Length: " + yLen);		
 		
-		InfiniDim<Integer> testInf = new InfiniDim<>(2, dimLenHashMap);
+		InfiniDim<Integer> testInf = new InfiniDim<>(2, null, dimLenHashMap);
 
 		//set up the coords for the new value		
 		HashMap<Integer, Integer> coordHashMap = new HashMap<>();
@@ -59,7 +59,7 @@ public class BasicTests {
 		System.out.println("y Length: " + yLen);		
 		System.out.println("z Length: " + zLen);
 		
-		InfiniDim<Integer> testInf = new InfiniDim<>(3, dimLenHashMap);
+		InfiniDim<Integer> testInf = new InfiniDim<>(3, null, dimLenHashMap);
 		
 		//set up the coords for the new value		
 		HashMap<Integer, Integer> coordHashMap = new HashMap<>();
@@ -88,7 +88,7 @@ public class BasicTests {
 		System.out.println("y Length: " + yLen);	
 		
 		
-		InfiniDim<Integer> testInfDim = new InfiniDim<Integer>(2, dimLen);
+		InfiniDim<Integer> testInfDim = new InfiniDim<>(2, null, dimLen);
 		HashMap<Integer, Integer> outNDim = new HashMap<>();
 		
 		outNDim = testInfDim.getNDim(flatIndex);
@@ -98,4 +98,29 @@ public class BasicTests {
 			
 		}
 	}
+	
+	
+	
+	private static void test3DFlatIndex(int xLen, int yLen, int zLen, int flatIndex) {
+		HashMap<Integer, Integer> dimLen = new HashMap<>();
+		dimLen.put(0, xLen);
+		dimLen.put(1, yLen);
+		dimLen.put(2, zLen);
+		
+		System.out.println("x Length: " + xLen);
+		System.out.println("y Length: " + yLen);	
+		System.out.println("z Length: " + zLen);
+		
+		
+		InfiniDim<Integer> testInfDim = new InfiniDim<>(3, null, dimLen);
+		HashMap<Integer, Integer> outNDim = new HashMap<>();
+		
+		outNDim = testInfDim.getNDim(flatIndex);
+		
+		for(int n = 0; n < testInfDim.getDimensions(); n++) { 
+			System.out.println(n + ": " + outNDim.get(n));
+			
+		}
+	}
+	
 }

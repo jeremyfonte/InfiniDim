@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public class InfiniDim<T extends Number> {
 	public final String id = UUID.randomUUID().toString(); //unique ID for this instance
-	private ArrayList<T> data = new ArrayList<T>(); //1D list that holds all the multidimensional, flattened
+	private ArrayList<T> data = new ArrayList<T>(); //1D list that holds all the multidimensional data, flattened
 	private int dimensions; //The number of dimensions (i.e., x, y, etc)
 	private HashMap<Integer, Integer> dimLen = new HashMap<Integer, Integer>(); //the length of each dimension, by key, i.e., 0, 1, 2 = x, y, z
 	
@@ -37,9 +37,12 @@ public class InfiniDim<T extends Number> {
 		return this.dimensions;
 	}
 	
-	//default constructor
-	public InfiniDim() {}
+	//default constructor - would create invalid object without number of dimensions specified
+	//public InfiniDim() {}
 	
+	public void setDimLen(HashMap<Integer, Integer> newDimLen) {
+		this.dimLen = newDimLen;
+	}
 	
 	/**normal, smaller constructor - specify dimensions and set lengths of the dimensions to 0
 	 * 
@@ -50,18 +53,61 @@ public class InfiniDim<T extends Number> {
 		for(int i = 0; i < dimensions; i++) {
 			this.dimLen.put(i, 0);
 		}
+		initDataArray(null);
 	}
+	
+	public InfiniDim(int numDimensions, T defaultValue) {
+		this.dimensions = numDimensions;
+		for(int i = 0; i < dimensions; i++) {
+			this.dimLen.put(i, 0);
+		}
+		initDataArray(defaultValue);
+	}
+	
 	
 	/**normal, full constructor - specify dimensions and lengths of each dimension
 	 * 
 	 * @param numDimensions The number of dimensions
 	 * @param dimLen A linked list storing the length of each dimension
 	 */
-	public InfiniDim(int numDimensions, HashMap<Integer, Integer> dimLen) {
+	public InfiniDim(int numDimensions, T defaultValue, HashMap<Integer, Integer> dimLen) {
 		this.dimensions = numDimensions;
 		this.dimLen = dimLen;
+		initDataArray(defaultValue);
 	}
 	
+	/**
+	 * Figure out the length of the 1D array, init it to the specified default value
+	 * 
+	 * @param defaultValue The initial value to set by default throughout the entire N-dimensional array
+	 */
+	private void initDataArray(T defaultValue) {
+		//if somehow the dimensions are zero, abort, throw error
+		if(dimensions < 1) {
+			//throw error
+			return;
+		}
+		else {
+			//figure out the length of the 1D array that holds the N-dim array's values
+			int dimLenProduct = this.dimLen.get(0);
+			for(int i = 1; i < this.dimensions; i++) {
+				dimLenProduct *= this.dimLen.get(i);
+			}
+			//declare and init capacity of the data ArrayList
+			this.data = new ArrayList<T>(dimLenProduct);
+			
+			for(int n = 0; n < dimLenProduct; n++) {
+				this.data.set(n, defaultValue);
+			}	
+		}
+	}
+	
+	/**
+	 * Accessor function for converting an N-dim value to a 1D value
+	 * 
+	 * @param coords The N-dimensional array coordinates for a point to convert to 1D flat array
+	 * @return The index of the flat array corresponding to the N-Dim value provided
+	 */
 	public int getFlatIndex(HashMap<Integer, Integer> coords) {
 		return mapNDimToSingle(coords);
 	}
