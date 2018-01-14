@@ -240,6 +240,24 @@ public class InfiniDim<T extends Number> {
 			return (T)(Integer)((Integer)n + (Integer)addOrSubAmount);
 		});
 	}
+
+	/**
+	 * Retrieve data directly from the internal representation
+	 * 
+	 * @param index Value of the desired index
+	 * @return Data at the specified flat index
+	 */
+	public T getDataFlat(int index) {
+		return this.data.get(index);
+	}
 	
-	
+	/**
+	 * Retrieve data at a specified coordinate
+	 * 
+	 * @param coords
+	 * @return The data value at the specified coordinates
+	 */
+	public T getData(HashMap<Integer, Integer> coords) {
+		return getDataFlat(this.mapNDimToSingle(coords));
+	}
 }

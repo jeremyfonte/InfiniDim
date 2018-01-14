@@ -135,8 +135,11 @@ public class BasicTests {
 			System.out.println("Output #" + n);
 			for(int y = 0; y < yLen; y++) {
 				for(int x = 0; x < xLen; x++) {
-					int thisVar = 0;
-					System.out.print(thisVar);
+					HashMap<Integer, Integer> tempHashArray = new HashMap<>();
+					tempHashArray.put(0, x);
+					tempHashArray.put(1, y);
+					int thisVar = testInfDim.getData(tempHashArray);
+					System.out.print(thisVar + " ");
 				}
 				
 				System.out.print("\n");
