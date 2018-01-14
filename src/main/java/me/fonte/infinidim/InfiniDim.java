@@ -21,6 +21,8 @@ package me.fonte.infinidim;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.function.Function;
+
 
 /**
  * 
@@ -73,7 +75,7 @@ public class InfiniDim<T extends Number> {
 	public InfiniDim(int numDimensions, T defaultValue, HashMap<Integer, Integer> dimLen) {
 		this.dimensions = numDimensions;
 		this.dimLen = dimLen;
-		initDataArray(defaultValue);
+		this.initDataArray(defaultValue);
 	}
 	
 	/**
@@ -90,6 +92,7 @@ public class InfiniDim<T extends Number> {
 		else {
 			//figure out the length of the 1D array that holds the N-dim array's values
 			int dimLenProduct = this.dimLen.get(0);
+			
 			for(int i = 1; i < this.dimensions; i++) {
 				dimLenProduct *= this.dimLen.get(i);
 			}
@@ -97,7 +100,7 @@ public class InfiniDim<T extends Number> {
 			this.data = new ArrayList<T>(dimLenProduct);
 			
 			for(int n = 0; n < dimLenProduct; n++) {
-				this.data.set(n, defaultValue);
+				this.data.add(n, defaultValue);
 			}	
 		}
 	}
@@ -207,5 +210,36 @@ public class InfiniDim<T extends Number> {
 		
 		return outputNDim;
 	}
+	
+	/**
+	 * Apply a lambda function to each element in the InfiniDim's data array
+	 * 
+	 * @param func A lambda function to apply to each data element in the N-dim array
+	 */
+	public void map(Function<T, T> func) {
+		ArrayList<T> outputData = new ArrayList<T>();
+		
+		int n = 0;
+		for(T elem : this.data) {
+			outputData.add(n, func.apply(elem));
+			n++;
+		}
+		
+		this.data = outputData;
+	}
+	
+	
+	
+	/**
+	 * Add or subtract a constant amount from each data item
+	 * 
+	 * @param addOrSubAmount The positive or negative amount to add
+	 */
+	public void addOrSubInteger(T addOrSubAmount) {
+		this.map((n)-> {
+			return (T)(Integer)((Integer)n + (Integer)addOrSubAmount);
+		});
+	}
+	
 	
 }

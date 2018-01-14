@@ -12,7 +12,8 @@ public class BasicTests {
 		//testBasic(10, 4, 1, 2);
 		//test3D(5, 10, 10, 1, 2, 2);
 		//testBasicFlatIndex(20, 5, 44);
-		test3DFlatIndex(5, 7, 3, 26);
+		//test3DFlatIndex(5, 7, 3, 26);
+		testMap(5, 5, 10);
 	}
 	
 	private static void testBasic(int xLen, int yLen, int xCoord, int yCoord) {
@@ -119,8 +120,29 @@ public class BasicTests {
 		
 		for(int n = 0; n < testInfDim.getDimensions(); n++) { 
 			System.out.println(n + ": " + outNDim.get(n));
-			
 		}
 	}
 	
+	private static void testMap(int xLen, int yLen, int addAmount) {
+		HashMap<Integer, Integer> dimLen = new HashMap<>();
+		dimLen.put(0, xLen);
+		dimLen.put(1, yLen);
+		
+		InfiniDim<Integer> testInfDim = new InfiniDim<>(2, 0, dimLen);
+		
+		
+		for(int n = 0; n <= 1; n++) {
+			System.out.println("Output #" + n);
+			for(int y = 0; y < yLen; y++) {
+				for(int x = 0; x < xLen; x++) {
+					int thisVar = 0;
+					System.out.print(thisVar);
+				}
+				
+				System.out.print("\n");
+			}
+			testInfDim.addOrSubInteger(addAmount);
+		}
+		
+	}
 }
