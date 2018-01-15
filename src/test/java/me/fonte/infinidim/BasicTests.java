@@ -13,7 +13,8 @@ public class BasicTests {
 		//test3D(5, 10, 10, 1, 2, 2);
 		//testBasicFlatIndex(20, 5, 44);
 		//test3DFlatIndex(5, 7, 3, 26);
-		testMap(5, 5, 10);
+		//testMap(5, 5, 10);
+		testMatrixAddition();
 	}
 	
 	private static void testBasic(int xLen, int yLen, int xCoord, int yCoord) {
@@ -123,12 +124,12 @@ public class BasicTests {
 		}
 	}
 	
-	private static void testMap(int xLen, int yLen, int addAmount) {
+	private static void testMap(int xLen, int yLen, int amount) {
 		HashMap<Integer, Integer> dimLen = new HashMap<>();
 		dimLen.put(0, xLen);
 		dimLen.put(1, yLen);
 		
-		InfiniDim<Integer> testInfDim = new InfiniDim<>(2, 0, dimLen);
+		InfiniDim<Integer> testInfDim = new InfiniDim<>(2, 1, dimLen);
 		
 		
 		for(int n = 0; n <= 1; n++) {
@@ -144,8 +145,48 @@ public class BasicTests {
 				
 				System.out.print("\n");
 			}
-			testInfDim.addOrSubInteger(addAmount);
+			//testInfDim.addOrSubInteger(addAmount);
+			testInfDim.multiplyScalarInt(amount);
 		}
 		
 	}
+	
+	private static void testMatrixAddition() {
+		HashMap<Integer, Integer> dimLen = new HashMap<>();
+		int xLen = 5;
+		int yLen = 4;
+		dimLen.put(0, xLen);
+		dimLen.put(1, yLen);
+		
+		InfiniDim<Integer> testInfDimLeft = new InfiniDim<>(2, 0, dimLen);
+		InfiniDim<Integer> testInfDimRight = new InfiniDim<>(2, 2, dimLen);
+		
+		int totalVal = 0;
+		for(int y = 0; y < yLen; y++) {
+			for(int x = 0; x < xLen; x++) {
+				HashMap<Integer, Integer> coords = new HashMap<>();
+				coords.put(0, x);
+				coords.put(1, y);
+				testInfDimLeft.setData(coords,  totalVal);
+				totalVal++;
+			}
+		}
+
+		InfiniDim<Integer> testInfDimOut = testInfDimLeft.matrixAddition(testInfDimRight);
+		
+		System.out.println("Output: ");
+		for(int y = 0; y < yLen; y++) {
+			for(int x = 0; x < xLen; x++) {
+				HashMap<Integer, Integer> coords = new HashMap<>();
+				coords.put(0, x);
+				coords.put(1, y);
+				int thisVar = testInfDimOut.getData(coords);
+				System.out.print(thisVar + " ");
+			}
+			
+			System.out.print("\n");
+		}
+	}
+	
+	
 }

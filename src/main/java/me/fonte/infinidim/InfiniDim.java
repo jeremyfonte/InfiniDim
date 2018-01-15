@@ -242,6 +242,18 @@ public class InfiniDim<T extends Number> {
 	}
 
 	/**
+	 * Multiply data items by a specified amount
+	 * 
+	 * @param multiplyAmount The amount to multiply by
+	 */
+	public void multiplyScalarInt(T multiplyAmount) {
+		this.map((n) -> {
+			return (T)(Integer)((Integer)n * (Integer)multiplyAmount);
+		});
+		
+	}
+	
+	/**
 	 * Retrieve data directly from the internal representation
 	 * 
 	 * @param index Value of the desired index
@@ -252,6 +264,35 @@ public class InfiniDim<T extends Number> {
 	}
 	
 	/**
+	 * Add a new value to the end of the data list
+	 * 
+	 * @param val The value to add
+	 */
+	/*public void addDataFlat(T val) {
+		this.data.add(val);
+	}*/
+	
+	/**
+	 * Set an existing index's value
+	 * 
+	 * @param index The index to change
+	 * @param val The value to set at specified index
+	 */
+	public void setDataFlat(int index, T val) {
+		this.data.set(index,  val);
+	}
+	
+	/**
+	 * Set an existing index's value
+	 * 
+	 * @param coords The coordinates of the N-dim array to set
+	 * @param val The value to set at specified index
+	 */
+	public void setData(HashMap<Integer, Integer> coords, T val) {
+		this.setDataFlat(this.mapNDimToSingle(coords), val);
+	}
+	
+	/**
 	 * Retrieve data at a specified coordinate
 	 * 
 	 * @param coords
@@ -259,5 +300,43 @@ public class InfiniDim<T extends Number> {
 	 */
 	public T getData(HashMap<Integer, Integer> coords) {
 		return getDataFlat(this.mapNDimToSingle(coords));
+	}
+	
+	/**
+	 * Matrix addition routine 
+	 * 
+	 * @param secondNDArray The second matrix to add to this instance
+	 * @return A new matrix, the result of matrix addition
+	 */
+	public InfiniDim<T> matrixAddition(InfiniDim<T> secondNDArray) {
+		if(this.dimensions != secondNDArray.dimensions || this.dimLen != secondNDArray.dimLen) {
+			//throw error
+			return null;
+		}
+		else {
+			int flatLen = this.data.size();
+			InfiniDim<T> outputNDArray = new InfiniDim<T>(this.dimensions, null, this.dimLen);
+			
+			for(int n = 0; n < flatLen; n++) {
+				
+				//remember to make handler functions for other numeric types, not just integers
+				T val = matrixAddInt(this.getDataFlat(n), secondNDArray.getDataFlat(n)); 
+				
+				outputNDArray.setDataFlat(n, val);
+			}
+			
+			return outputNDArray;
+		}
+	}
+	
+	/**
+	 * Sum integer matrices
+	 *  
+	 * @param thisInt The first of two T/int values to sum
+	 * @param secondInt The second of two T/int values to sum
+	 * @return The sum of the two integers, as a T value
+	 */
+	private T matrixAddInt(T thisInt, T secondInt) {
+		return (T)(Integer)((Integer)thisInt + (Integer)secondInt);
 	}
 }
