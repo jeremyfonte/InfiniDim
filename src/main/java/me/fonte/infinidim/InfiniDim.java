@@ -46,6 +46,10 @@ public class InfiniDim<T extends Number> {
 		this.dimLen = newDimLen;
 	}
 	
+	public HashMap<Integer, Integer> getDimLen() {
+		return this.dimLen;
+	}
+	
 	/**normal, smaller constructor - specify dimensions and set lengths of the dimensions to 0
 	 * 
 	 * @param numDimensions The number of dimensions
@@ -338,5 +342,65 @@ public class InfiniDim<T extends Number> {
 	 */
 	private T matrixAddInt(T thisInt, T secondInt) {
 		return (T)(Integer)((Integer)thisInt + (Integer)secondInt);
+	}
+	
+	/**
+	 * Sum double (floating point) matrices
+	 * 
+	 * @param thisDbl The first of two T/double values to sum
+	 * @param secondDbl The second of two T/double values to sum
+	 * @return The sum of the two doubles, as a T value
+	 */
+	private T matrixAddDouble(T thisDbl, T secondDbl) {
+		return (T)(Double)((Double)thisDbl + (Double)secondDbl);
+	}
+	
+	
+	/**
+	 * Get a 1D slice of an N-dim array
+	 * 
+	 * @param dimension The dimension to slice
+	 * @param coords The coordinates - only coords different than the selected dimension are actually used
+	 * @param start The start of the slice
+	 * @param end The end of the slice
+	 * @return An array of the sliced values
+	 */
+	public ArrayList<T> getSlice(int dimension, HashMap<Integer, Integer> coords, int start, int end) {
+		ArrayList<T> outputRow = new ArrayList<>();
+		int dimensionsMax = this.getDimensions() - 1;
+		
+		if(dimension > dimensionsMax || dimension < 0) {
+			//throw error
+			return null;
+		}
+		else { //valid dimension index
+			
+			//the size of the dimension to be "sliced" - as in number of elements
+			int sliceDimLen = this.dimLen.get(dimension);
+			
+			
+			//TODO: implement a step feature and other nice range features
+			//
+			if(start < 0 || start > end || start > sliceDimLen) {
+				//throw error
+				return null;
+			}
+			if(end < 0 || end < start || end > sliceDimLen) {
+				//throw error
+				return null;
+			}
+			
+			
+			//step through the slice, adding values to the outputRow
+			for(int n = start; n <= end; n++) {
+				//set the coordinates for the slice dimension to the current element of the slice
+				coords.put(dimension, n);
+				T val = this.getData(coords);
+				outputRow.add(val);
+			}
+			
+			//return the 1D slice array
+			return outputRow;
+		}
 	}
 }

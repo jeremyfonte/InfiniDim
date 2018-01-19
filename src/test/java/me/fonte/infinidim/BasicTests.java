@@ -1,6 +1,7 @@
 package me.fonte.infinidim;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class BasicTests {
 	
@@ -14,7 +15,8 @@ public class BasicTests {
 		//testBasicFlatIndex(20, 5, 44);
 		//test3DFlatIndex(5, 7, 3, 26);
 		//testMap(5, 5, 10);
-		testMatrixAddition();
+		//testMatrixAddition();
+		testBasicSlice();
 	}
 	
 	private static void testBasic(int xLen, int yLen, int xCoord, int yCoord) {
@@ -188,5 +190,60 @@ public class BasicTests {
 		}
 	}
 	
+	private static void testBasicSlice() {
+		HashMap<Integer, Integer> dimLen = new HashMap<>();
+		int xLen = 3;
+		int yLen = 4;
+		dimLen.put(0, xLen);
+		dimLen.put(1, yLen);
+		
+		InfiniDim<Integer> testInfDim = new InfiniDim<>(2, 0, dimLen);
+		
+		//init the 2D array
+		for(int y = 0; y < yLen; y++) {
+			for(int x = 0; x < xLen; x++) {
+				HashMap<Integer, Integer> coords = new HashMap<>();
+				coords.put(0, x);
+				coords.put(1, y);
+				int val = 0;
+				if(x == 2) {
+					val = 100;
+				}
+				
+				testInfDim.setData(coords, val);
+			}
+		}
+		
+		//test the slicing function
+		ArrayList<Integer> testX = new ArrayList<>();
+		ArrayList<Integer> testY = new ArrayList<>();
+		HashMap<Integer, Integer> coords = new HashMap<>();
+		coords.put(0, 2);
+		coords.put(1, 0);
+		
+		testY = testInfDim.getSlice(1, coords, 0, 3);
+		
+		System.out.println("\nY slice, x index = 2");
+		for(int i : testY) {
+			System.out.print(i + " ");
+		}
+		
+		System.out.println("\nY slice, x index = 1");
+		
+		coords.put(0, 1);
+		testY = testInfDim.getSlice(1, coords, 0, 3);
+		for(int i : testY) {
+			System.out.print(i + " ");
+		}
+		
+		System.out.println("\nX slice, y index = 0");
+		
+		coords.put(0, 0);
+		coords.put(1, 0);
+		testX = testInfDim.getSlice(0, coords, 0, 3);
+		for(int i : testX) {
+			System.out.print(i + " ");
+		}
+	}
 	
 }
