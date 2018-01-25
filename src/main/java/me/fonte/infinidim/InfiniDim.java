@@ -357,7 +357,7 @@ public class InfiniDim<T extends Number> {
 	
 	
 	/**
-	 * Get a 1D slice of an N-dim array
+	 * Get a 1D slice of an N-dim array - calls the main getSlice function with an implied step of 1
 	 * 
 	 * @param dimension The dimension to slice
 	 * @param coords The coordinates - only coords different than the selected dimension are actually used
@@ -366,6 +366,20 @@ public class InfiniDim<T extends Number> {
 	 * @return An array of the sliced values
 	 */
 	public ArrayList<T> getSlice(int dimension, HashMap<Integer, Integer> coords, int start, int end) {
+		return getSlice(dimension, coords, start, end, 1);
+	}
+	
+	/**
+	 * Get a 1D slice of an N-dim array
+	 * 
+	 * @param dimension The dimension to slice
+	 * @param coords The coordinates - only coords different than the selected dimension are actually used
+	 * @param start The start of the slice
+	 * @param end The end of the slice
+	 * @param step The value added in each step of the iteration[
+	 * @return An array of the sliced values
+	 */	
+	public ArrayList<T> getSlice(int dimension, HashMap<Integer, Integer> coords, int start, int end, int step) {
 		ArrayList<T> outputRow = new ArrayList<>();
 		int dimensionsMax = this.getDimensions() - 1;
 		
@@ -392,7 +406,10 @@ public class InfiniDim<T extends Number> {
 			
 			
 			//step through the slice, adding values to the outputRow
-			for(int n = start; n <= end; n++) {
+			for(int n = start; n <= end; n += step) {
+				if(n < start || n > end) {
+					return outputRow;
+				}
 				//set the coordinates for the slice dimension to the current element of the slice
 				coords.put(dimension, n);
 				T val = this.getData(coords);

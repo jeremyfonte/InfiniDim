@@ -227,6 +227,26 @@ public class BasicTests {
 		for(int i : testY) {
 			System.out.print(i + " ");
 		}
+
+		testY = testInfDim.getSlice(1, coords, 0, 3, 2);
+		
+		System.out.println("\nY slice, x index = 2, step = 2");
+		for(int i : testY) {
+			System.out.print(i + " ");
+		}		
+
+		testY = testInfDim.getSlice(1, coords, 0, 3, 3);
+		System.out.println("\nY slice, x index = 2, step = 3");
+		for(int i : testY) {
+			System.out.print(i + " ");
+		}		
+
+		testY = testInfDim.getSlice(1, coords, 0, 3, 15);
+		System.out.println("\nY slice, x index = 2, step = 15");
+		for(int i : testY) {
+			System.out.print(i + " ");
+		}		
+
 		
 		System.out.println("\nY slice, x index = 1");
 		
