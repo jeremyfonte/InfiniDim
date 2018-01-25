@@ -1,4 +1,4 @@
-[[https://github.com/jeremyfonte/InfiniDim/blob/master/assets/InfiniDim_header.jpg]]
+![Banner image for InfiniDim](https://github.com/jeremyfonte/InfiniDim/blob/master/assets/InfiniDim_header.jpg)
 
 # InfiniDim
 Implementation of an N-Dimensional array structure in Java<br>
